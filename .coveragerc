@@ -1,0 +1,2 @@
+[run]
+omit = all_tests/*

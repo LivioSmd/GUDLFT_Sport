@@ -16,5 +16,3 @@ class MockData:
         {"name": "Club 1", "email": "club1@example.com"},
         {"name": "Club 2", "email": "club2@example.com"}
     ]
-
-    invalid_email = "invalid@example.com"

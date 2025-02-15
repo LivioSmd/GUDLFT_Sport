@@ -1,53 +1,45 @@
-from .fixtures import client
-
-""""
-def test_should_start_app(client):
-
-    response = client.get('/')
-    assert response.status_code == 200
+from .fixtures import client, MockData
+from server import get_club_by_email, loadClubs, clubs, competitions
 
 
-def test_should_redirect_to_index_if_invalid_email(client, mocker):
-
-
-    # Données mockées pour remplacer le contenu de `clubs`
-    mock_clubs = [
-        {"name": "Club 1", "email": "club1@example.com"},
-        {"name": "Club 2", "email": "club2@example.com"}
-    ]
+def test_get_club_from_email_valid(client, mocker):
+    """Test que get_club_from_email retourne le club correspondant à l'email."""
 
     # Mock de la fonction loadClubs
-    mocker.patch("server.loadClubs", return_value=mock_clubs)
+    mocker.patch("server.clubs", MockData.mock_clubs)
 
-    # Simule une requête POST avec un email invalide
-    response = client.post('/showSummary', data={'email': 'invalid@example.com'})
+    # appel de la fonction get_club_by_email
+    club = get_club_by_email(MockData.mock_clubs[0]["email"])
 
-    print(response.headers)
-    assert response.status_code == 302  # Vérifie la redirection
-    assert response.headers['Location'] == '/'  # Vérifie la redirection vers la page d'accueil
-"""""
+    # Verification du club retourné
+    assert club is not None
+    assert club["name"] == "Club 1"
 
 
-def test_should_valid_email(client, mocker):
-    """
-    Test que l'application redirige vers la page welcome si l'email est valide.
-    """
-
-    # Données mockées pour remplacer le contenu de `clubs`
-    mock_clubs = [
-        {"name": "Club 1", "email": "club1@example.com"},
-        {"name": "Club 2", "email": "club2@example.com"}
-    ]
+def test_get_club_from_email_invalid(client, mocker):
+    """Test que get_club_from_email retourne None si l'email n'est pas trouvé."""
 
     # Mock de la fonction loadClubs
-    mocker.patch("server.loadClubs", return_value=mock_clubs)
+    mocker.patch("server.clubs", MockData.mock_clubs)
 
-    # Simule une requête POST avec un email invalide
-    response = client.post('/showSummary', data={'email': 'club1@example.com'})
-    # response = client.post("/showSummary", data={"email": "admin@irontemple.com"})
+    club = get_club_by_email(MockData.invalid_email)
 
-    print('headers : ', response.headers)
-    print('response : ', response)
+    assert club is None
 
-    assert response.status_code == 200
-    assert b"Welcome" in response.data
+
+def test_loadClubs(client):
+    """Test que les clubs sont chargés correctement au demarrage de l'application."""
+    assert clubs is not None
+    assert len(clubs) != 0
+
+
+def test_loadClubs_test(client, monkeypatch):
+    """Test que les clubs sont chargés correctement au demarrage de l'application."""
+    assert clubs is not None
+    assert len(clubs) != 0
+
+
+def test_loadCompetitions(client):
+    """Test que les compétitions sont chargées correctement au demarrage de l'application."""
+    assert competitions is not None
+    assert len(competitions) != 0
