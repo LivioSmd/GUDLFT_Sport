@@ -1,5 +1,6 @@
 from .fixtures import client, MockData
-from server import get_club_by_email, loadClubs, clubs, competitions, get_competition, get_club, get_place_required
+from server import (get_club_by_email, loadClubs, clubs, competitions, get_competition, get_club, get_place_required,
+                    manage_over_competitions)
 
 
 def test_get_club_from_email_valid(client, mocker):
@@ -110,3 +111,12 @@ def test_not_get_place_required(client):
     assert place_required == 0
     assert isinstance(place_required, int)  # place_required should be an integer
 
+
+def test_get_over_competitions_list(client):
+    """manage_over_competitions should return a list of competitions that are over."""
+
+    over_competitions = manage_over_competitions(MockData.mock_competitions)
+
+    assert over_competitions is not None
+    assert len(over_competitions) == 1
+    assert over_competitions[0]["name"] == "Competition 3"

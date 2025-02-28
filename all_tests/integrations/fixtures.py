@@ -21,13 +21,23 @@ class MockData:
     mock_competitions = [
         {
             "name": "Competition 1",
-            "date": "2020-03-27 10:00:00",
+            "date": "2030-01-01 13:00:00",
             "numberOfPlaces": "25"
         },
         {
             "name": "Competition 2",
-            "date": "2020-10-22 13:30:00",
+            "date": "2030-01-01 13:00:00",
             "numberOfPlaces": "10"
+        },
+        {
+            "name": "Competition 3",
+            "date": "2000-01-01 13:00:00",
+            "numberOfPlaces": "10"
+        },
+        {
+            "name": "Competition 4",
+            "date": "2030-01-01 13:00:00",
+            "numberOfPlaces": "0"
         }
     ]
 

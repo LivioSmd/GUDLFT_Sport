@@ -1,5 +1,6 @@
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
+from datetime import datetime
 
 
 def loadClubs():
@@ -19,6 +20,7 @@ app.secret_key = 'something_special'
 
 competitions = loadCompetitions()
 clubs = loadClubs()
+today = datetime.today().strftime("%Y-%m-%d")  # Today date format : "YYYY-MM-DD"
 
 
 def get_club_by_email(email):
@@ -37,8 +39,13 @@ def index():
 @app.route('/showSummary', methods=['POST'])
 def showSummary():
     club = get_club_by_email(request.form['email'])
-    if club:    # club is found in database
-        return render_template('welcome.html', club=club, competitions=competitions)
+    over_competitions = manage_over_competitions(competitions)  # return a list of competitions that are over
+
+    if club:  # club is found in database
+        return render_template('welcome.html',
+                               club=club,
+                               competitions=competitions,
+                               over_competitions=over_competitions)
     else:
         flash("Sorry, we couldn't find that email.")
         return redirect(url_for("index"))
@@ -108,6 +115,16 @@ def get_place_required(place_number):
         return placesRequired
     except ValueError:
         return int(0)
+
+
+def manage_over_competitions(competitions_list):
+    over_competitions = []
+
+    for competition in competitions_list:
+        if competition["date"] < today:
+            over_competitions.append(competition)
+
+    return over_competitions
 
 
 # TODO: Add route for points display

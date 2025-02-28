@@ -11,8 +11,18 @@
             "numberOfPlaces": "13"
         },
         {
+            "name": "2026 Competition",
+            "date": "2026-01-01 12:00:00",
+            "numberOfPlaces": "0"
+        },
+        {
+            "name": "2026 Competition",
+            "date": "2026-01-01 12:00:00",
+            "numberOfPlaces": "20"
+        },
+        {
             "name": "Admin Test",
-            "date": "2024-10-10 13:30:00",
+            "date": "2030-01-01 00:00:00",
             "numberOfPlaces": "50"
         }
     ]

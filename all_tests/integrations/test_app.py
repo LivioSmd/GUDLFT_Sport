@@ -103,3 +103,50 @@ def test_clubs_cannot_purchase_more_than_twelve_places_per_competition(client, m
     print(response.data)
     assert response.status_code == 200  # Vérifie le status code
     assert b"Sorry, the maximum number of places per club per competition is : 12." in response.data
+
+
+def test_should_display_showSummary_with_valid_competition(client, mocker):
+    """test that the showSummary page is displayed with valid competition"""
+
+    mocker.patch("server.clubs", MockData.mock_clubs)
+    mocker.patch("server.competitions", [MockData.mock_competitions[0]])
+
+    response = client.post('/showSummary', data={'email': 'club1@example.com'})
+
+    # Check find a valid competition
+    assert response.status_code == 200
+    assert b"Competition 1" in response.data
+    assert b"Date: 2030-01-01 13:00:00" in response.data
+    assert b"Number of Places: 25" in response.data
+    assert b"Book Places" in response.data
+
+
+def test_should_display_showSummary_with_over_competition(client, mocker):
+    """test that the showSummary page is displayed with valid competition"""
+
+    mocker.patch("server.clubs", MockData.mock_clubs)
+    mocker.patch("server.competitions", [MockData.mock_competitions[2]])
+
+    response = client.post('/showSummary', data={'email': 'club1@example.com'})
+
+    # Check find an over competition
+    assert response.status_code == 200
+    assert b"Competition 3" in response.data
+    assert b"Date: 2000-01-01 13:00:00" in response.data
+    assert b"This competition is now over" in response.data
+
+
+def test_should_display_showSummary_with_no_place_in_competition(client, mocker):
+    """test that the showSummary page is displayed with valid competition"""
+
+    mocker.patch("server.clubs", MockData.mock_clubs)
+    mocker.patch("server.competitions", [MockData.mock_competitions[3]])
+
+    response = client.post('/showSummary', data={'email': 'club1@example.com'})
+
+    # Check find an over competition
+    assert response.status_code == 200
+    assert b"Competition 4" in response.data
+    assert b"Date: 2030-01-01 13:00:00" in response.data
+    assert b"Number of Places: 0" in response.data
+    assert b"Sorry, there are no more places available in this competition" in response.data
