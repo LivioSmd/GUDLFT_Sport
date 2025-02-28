@@ -66,7 +66,7 @@ def test_should_not_valid_purchase_places_if_places_required_is_empty(client, mo
         'places': ""
     }, follow_redirects=True)
     assert response.status_code == 200  # Vérifie le status code
-    assert b"Select a number of places greater than 0." in response.data
+    assert b"Sorry, select a number of places greater than 0." in response.data
 
 
 def test_should_not_valid_purchase_places_if_places_required_are_grater_than_number_of_club_points(client, mocker):
@@ -77,7 +77,7 @@ def test_should_not_valid_purchase_places_if_places_required_are_grater_than_num
         'places': "35"
     }, follow_redirects=True)
     assert response.status_code == 200  # Vérifie le status code
-    assert b"Your club doesn&#39;t have enough points." in response.data
+    assert b"Sorry, your club doesn&#39;t have enough points." in response.data
 
 
 def test_not_purchase_places_if_places_required_are_grater_than_number_of_competition_available_places(client, mocker):
@@ -88,5 +88,18 @@ def test_not_purchase_places_if_places_required_are_grater_than_number_of_compet
         'places': "20"
     }, follow_redirects=True)
     assert response.status_code == 200  # Vérifie le status code
-    assert b"You cannot reserve more places than are available." in response.data
+    assert b"Sorry, you cannot reserve more places than are available." in response.data
 
+
+def test_clubs_cannot_purchase_more_than_twelve_places_per_competition(client, mocker):
+    """clubs should not be able to purchase more than 12 places per competition"""
+
+    mocker.patch("server.clubs", MockData.mock_clubs)
+    mocker.patch("server.competitions", MockData.mock_competitions)
+    response = client.post('/purchasePlaces', data={
+        **MockData.purchase_place_data,
+        'places': "13"
+    }, follow_redirects=True)
+    print(response.data)
+    assert response.status_code == 200  # Vérifie le status code
+    assert b"Sorry, the maximum number of places per club per competition is : 12." in response.data

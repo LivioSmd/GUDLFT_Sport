@@ -63,13 +63,16 @@ def purchasePlaces():
     places_required = get_place_required(request.form["places"])
 
     if places_required < 1:
-        flash('Select a number of places greater than 0.')
+        flash('Sorry, select a number of places greater than 0.')
         return redirect(url_for("book", competition=competition["name"], club=club["name"]))
     elif int(places_required) > int(club["points"]):
-        flash("Your club doesn't have enough points.")
+        flash("Sorry, your club doesn't have enough points.")
         return redirect(url_for("book", competition=competition["name"], club=club["name"]))
     elif int(places_required) > int(competition["numberOfPlaces"]):
-        flash("You cannot reserve more places than are available.")
+        flash("Sorry, you cannot reserve more places than are available.")
+        return redirect(url_for("book", competition=competition["name"], club=club["name"]))
+    elif int(places_required) > int(12):
+        flash("Sorry, the maximum number of places per club per competition is : 12.")
         return redirect(url_for("book", competition=competition["name"], club=club["name"]))
 
     try:

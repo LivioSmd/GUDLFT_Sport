@@ -122,7 +122,7 @@ class TestAuthentification:
         Utils.sleep()
 
         li_element = self.browser.find_element(By.TAG_NAME, "li")
-        assert li_element.text == "Select a number of places greater than 0.", "Error in element retrieval"
+        assert li_element.text == "Sorry, select a number of places greater than 0.", "Error in element retrieval"
 
     def test_should_not_book_more_places_than_you_own(self):
         """Test de reservation de places"""
@@ -136,13 +136,13 @@ class TestAuthentification:
         book_competition_button.click()
         Utils.sleep()
         places_input = self.browser.find_element(By.NAME, "places")
-        places_input.send_keys("25")
+        places_input.send_keys("101")
         places_submit_button = self.browser.find_element(By.TAG_NAME, "button")
         places_submit_button.click()
         Utils.sleep()
 
         li_element = self.browser.find_element(By.TAG_NAME, "li")
-        assert li_element.text == "Your club doesn't have enough points.", "Error in element retrieval"
+        assert li_element.text == "Sorry, your club doesn't have enough points.", "Error in element retrieval"
 
     def test_should_not_book_more_places_than_are_available(self):
         """Test de reservation de places"""
@@ -156,10 +156,30 @@ class TestAuthentification:
         book_competition_button.click()
         Utils.sleep()
         places_input = self.browser.find_element(By.NAME, "places")
-        places_input.send_keys("10")
+        places_input.send_keys("51")
         places_submit_button = self.browser.find_element(By.TAG_NAME, "button")
         places_submit_button.click()
         Utils.sleep()
 
         li_element = self.browser.find_element(By.TAG_NAME, "li")
-        assert li_element.text == "You cannot reserve more places than are available.", "Error in element retrieval"
+        assert li_element.text == "Sorry, you cannot reserve more places than are available.", "Error in element retrieval"
+
+    def test_should_not_book_more_than_twelve_places_per_competition(self):
+        """Test de reservation de places"""
+
+        email_input = self.browser.find_element(By.NAME, "email")
+        login_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        email_input.send_keys("admin@test.com")
+        login_submit_button.click()
+        Utils.sleep()
+        book_competition_button = self.browser.find_element(By.ID, "competition-2")
+        book_competition_button.click()
+        Utils.sleep()
+        places_input = self.browser.find_element(By.NAME, "places")
+        places_input.send_keys("13")
+        places_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        places_submit_button.click()
+        Utils.sleep()
+
+        li_element = self.browser.find_element(By.TAG_NAME, "li")
+        assert li_element.text == "Sorry, the maximum number of places per club per competition is : 12.", "Error in element retrieval"
