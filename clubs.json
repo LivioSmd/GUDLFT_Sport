@@ -15,7 +15,7 @@
     },
     {
         "name":"Test Club",
-        "email": "test@example.com",
+        "email": "admin@test.com",
         "points":"20"
     }
 ]}

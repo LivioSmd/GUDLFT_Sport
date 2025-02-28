@@ -57,27 +57,19 @@ def book(competition, club):
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
-    print('test')
 
     competition = get_competition(request.form["competition"])
     club = get_club(request.form["club"])
     places_required = get_place_required(request.form["places"])
 
-    print('competition :', competition)
-    print('places club :', club)
-    print('places required :', places_required)
-
     if places_required < 1:
-        flash('Select a number of places greater than 0')
-        print('Select a number of places greater than 0')
+        flash('Select a number of places greater than 0.')
         return redirect(url_for("book", competition=competition["name"], club=club["name"]))
     elif int(places_required) > int(club["points"]):
-        flash("Your club doesn't have enough points")
-        print("Your club doesn't have enough points")
+        flash("Your club doesn't have enough points.")
         return redirect(url_for("book", competition=competition["name"], club=club["name"]))
     elif int(places_required) > int(competition["numberOfPlaces"]):
         flash("You cannot reserve more places than are available.")
-        print("You cannot reserve more places than are available.")
         return redirect(url_for("book", competition=competition["name"], club=club["name"]))
 
     try:
@@ -85,11 +77,9 @@ def purchasePlaces():
         club["points"] = int(club["points"]) - places_required
 
         flash('Great-booking complete!')
-        print('Great-booking complete!')
         return render_template('welcome.html', club=club, competitions=competitions)
     except ValueError:
         flash('Sorry, there was an error with your booking. Please try again.')
-        print('Sorry, there was an error with your booking. Please try again.')
         return render_template('booking.html', club=club, competition=competition)
 
 

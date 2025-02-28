@@ -25,15 +25,13 @@ class TestAuthentification:
         self.browser.quit()  # Ferme proprement le navigateur
 
     def test_open_chrome_window(self):
-
         # Récupération du titre H1
         h1_element = self.browser.find_element(By.TAG_NAME, "h1")
 
         # Vérification du titre H1
-        assert h1_element.text == "Welcome to the GUDLFT Registration Portal!", "Le titre H1 est incorrect"
+        assert h1_element.text == "Welcome to the GUDLFT Registration Portal!", "Error in element retrieval"
 
-    def test_connexion_invalid_email(self, mocker):
-
+    def test_connexion_invalid_email(self):
         # Récupération du champ email
         email_input = self.browser.find_element(By.NAME, "email")
 
@@ -55,10 +53,10 @@ class TestAuthentification:
         li_element = self.browser.find_element(By.TAG_NAME, "li")
 
         # Vérification du titre "h1" et du message d'erreur
-        assert h1_element.text == "Welcome to the GUDLFT Registration Portal!", "Le titre H1 est incorrect"
-        assert li_element.text == "Sorry, we couldn't find that email.", "Le message d'erreur est incorrect"
+        assert h1_element.text == "Welcome to the GUDLFT Registration Portal!", "Error in element retrieval"
+        assert li_element.text == "Sorry, we couldn't find that email.", "Error in element retrieval"
 
-    def test_connexion_valid_email(self, mocker):
+    def test_connexion_valid_email(self):
         """Test d'authentification avec un email invalide."""
 
         # Récupération du champ email
@@ -68,7 +66,7 @@ class TestAuthentification:
         submit_button = self.browser.find_element(By.TAG_NAME, "button")
 
         # Saisie de l'email
-        email_input.send_keys("admin@irontemple.com")
+        email_input.send_keys("admin@test.com")
 
         # Appui sur le bouton submit
         submit_button.click()
@@ -79,4 +77,89 @@ class TestAuthentification:
         h2_element = self.browser.find_element(By.TAG_NAME, "h2")
 
         # Vérification du titre "h1"
-        assert h2_element.text == "Welcome, admin@irontemple.com", "Impossible de trouver le message d'après connexion"
+        assert h2_element.text == "Welcome, admin@test.com", "Error in element retrieval"
+
+    def test_should_purchase_places(self):
+        """Test de reservation de places"""
+
+        email_input = self.browser.find_element(By.NAME, "email")
+        login_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        email_input.send_keys("admin@test.com")
+        login_submit_button.click()
+        Utils.sleep()
+
+        # récupération du bouton de réservation
+        book_competition_button = self.browser.find_element(By.ID, "competition-2")
+        book_competition_button.click()
+
+        Utils.sleep()
+
+        places_input = self.browser.find_element(By.NAME, "places")
+        places_input.send_keys("1")
+        places_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        places_submit_button.click()
+
+        Utils.sleep()
+
+        li_element = self.browser.find_element(By.TAG_NAME, "li")
+        assert li_element.text == "Great-booking complete!", "Error in element retrieval"
+
+    def test_should_not_purchase_less_than_one_place(self):
+        """Test de reservation de places"""
+
+        email_input = self.browser.find_element(By.NAME, "email")
+        login_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        email_input.send_keys("admin@test.com")
+        login_submit_button.click()
+        Utils.sleep()
+        book_competition_button = self.browser.find_element(By.ID, "competition-2")
+        book_competition_button.click()
+        Utils.sleep()
+        places_input = self.browser.find_element(By.NAME, "places")
+        places_input.send_keys("0")
+        places_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        places_submit_button.click()
+        Utils.sleep()
+
+        li_element = self.browser.find_element(By.TAG_NAME, "li")
+        assert li_element.text == "Select a number of places greater than 0.", "Error in element retrieval"
+
+    def test_should_not_book_more_places_than_you_own(self):
+        """Test de reservation de places"""
+
+        email_input = self.browser.find_element(By.NAME, "email")
+        login_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        email_input.send_keys("admin@test.com")
+        login_submit_button.click()
+        Utils.sleep()
+        book_competition_button = self.browser.find_element(By.ID, "competition-2")
+        book_competition_button.click()
+        Utils.sleep()
+        places_input = self.browser.find_element(By.NAME, "places")
+        places_input.send_keys("25")
+        places_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        places_submit_button.click()
+        Utils.sleep()
+
+        li_element = self.browser.find_element(By.TAG_NAME, "li")
+        assert li_element.text == "Your club doesn't have enough points.", "Error in element retrieval"
+
+    def test_should_not_book_more_places_than_are_available(self):
+        """Test de reservation de places"""
+
+        email_input = self.browser.find_element(By.NAME, "email")
+        login_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        email_input.send_keys("admin@test.com")
+        login_submit_button.click()
+        Utils.sleep()
+        book_competition_button = self.browser.find_element(By.ID, "competition-2")
+        book_competition_button.click()
+        Utils.sleep()
+        places_input = self.browser.find_element(By.NAME, "places")
+        places_input.send_keys("10")
+        places_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        places_submit_button.click()
+        Utils.sleep()
+
+        li_element = self.browser.find_element(By.TAG_NAME, "li")
+        assert li_element.text == "You cannot reserve more places than are available.", "Error in element retrieval"

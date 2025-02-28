@@ -1,11 +1,11 @@
 from .fixtures import client, MockData
-from server import get_club_by_email, loadClubs, clubs, competitions
+from server import get_club_by_email, loadClubs, clubs, competitions, get_competition, get_club, get_place_required
 
 
 def test_get_club_from_email_valid(client, mocker):
     """Test que get_club_from_email retourne le club correspondant à l'email."""
 
-    # Mock de la fonction loadClubs
+    # Mock de la variable clubs
     mocker.patch("server.clubs", MockData.mock_clubs)
 
     # appel de la fonction get_club_by_email
@@ -43,3 +43,70 @@ def test_loadCompetitions(client):
     """Test que les compétitions sont chargées correctement au demarrage de l'application."""
     assert competitions is not None
     assert len(competitions) != 0
+
+
+def test_get_competition(client, mocker):
+    """Test que la fonction get_competition retourne la compétition correspondante."""
+
+    # Mock de la variable competitions
+    mocker.patch("server.competitions", MockData.mock_competitions)
+
+    competition = get_competition(MockData.mock_competitions[0]["name"])
+
+    assert competition is not None
+    assert competition["name"] == "Competition 1"
+
+
+def test_not_get_competition(client, mocker):
+    """Test que la fonction get_competition retourne none si aucune nom ne correspond."""
+
+    # Mock de la variable competitions
+    mocker.patch("server.competitions", MockData.mock_competitions)
+
+    competition = get_competition(MockData.invalid_competition_name)
+
+    assert competition is None
+
+
+def test_get_club(client, mocker):
+    """Test que la fonction get_club retourne le club correspondante."""
+
+    # Mock de la variable clubs
+    mocker.patch("server.clubs", MockData.mock_clubs)
+
+    club = get_club(MockData.mock_clubs[0]["name"])
+
+    assert club is not None
+    assert club["name"] == "Club 1"
+
+
+def test_not_get_club(client, mocker):
+    """Test que la fonction get_club retourne le club correspondante."""
+
+    # Mock de la variable clubs
+    mocker.patch("server.clubs", MockData.mock_clubs)
+
+    club = get_club(MockData.invalid_club_name)
+
+    assert club is None
+
+
+def test_get_place_required(client):
+    """Test que la fonction get_place_required retourne les places requises."""
+
+    place_required = get_place_required(10)
+
+    assert place_required is not None
+    assert place_required == 10
+    assert isinstance(place_required, int)  # place_required should be an integer
+
+
+def test_not_get_place_required(client):
+    """Test que la fonction get_place_required retourne les places requises."""
+
+    place_required = get_place_required(MockData.invalid_place_required)
+
+    assert place_required is not None
+    assert place_required == 0
+    assert isinstance(place_required, int)  # place_required should be an integer
+
