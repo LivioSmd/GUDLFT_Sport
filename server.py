@@ -57,7 +57,6 @@ def showSummary():
     if club:  # club is found in database
         return render_template('welcome.html',
                                club=club,
-                               clubs=clubs,
                                competitions=competitions,
                                over_competitions=over_competitions)
     else:
@@ -75,7 +74,6 @@ def book(competition, club):
         flash("Something went wrong-please try again")
         return render_template('welcome.html',
                                club=club,
-                               clubs=clubs,
                                over_competitions=over_competitions,
                                competitions=competitions)
 
@@ -111,7 +109,6 @@ def purchasePlaces():
         flash('Great-booking complete!')
         return render_template('welcome.html',
                                club=club,
-                               clubs=clubs,
                                over_competitions=over_competitions,
                                competitions=competitions)
     except ValueError:
@@ -169,7 +166,13 @@ def manage_competition_places_in_db(competition):
         json.dump(dict_competitions, file_competition, indent=4)
 
 
-# TODO: Add route for points display
+@app.route('/displayClubsList', methods=['GET'])
+def displayClubsList():
+    if clubs:
+        return render_template('display_clubs.html', clubs=clubs)
+    else:
+        flash("Sorry, there is no club in data base")
+        return redirect(url_for("index"))
 
 
 @app.route('/logout')

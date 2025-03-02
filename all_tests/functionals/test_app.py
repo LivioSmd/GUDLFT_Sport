@@ -210,19 +210,19 @@ class TestAuthentification:
         assert comp_over_element.text == "This competition is now over", "Error in element retrieval"
         assert comp_no_place_element.text == "Sorry, there are no more places available in this competition", "Error in element retrieval"
 
-    def test_should_should_display_showSummary_with_list_of_clubs_and_their_points(self):
+    def test_should_should_display_list_of_clubs_and_their_points(self):
 
-        email_input = self.browser.find_element(By.NAME, "email")
-        login_submit_button = self.browser.find_element(By.TAG_NAME, "button")
-        email_input.send_keys("admin@test.com")
-        login_submit_button.click()
+        clubs_list_button = self.browser.find_element(By.ID, "clubs_list_button")
+        clubs_list_button.click()
         Utils.sleep()
 
-        clubs_title = self.browser.find_element(By.ID, "clubs_title")
+        clubs_list_title = self.browser.find_element(By.TAG_NAME, "h2")
+        go_back_button = self.browser.find_element(By.ID, "go_back_button")
         club_name = self.browser.find_element(By.ID, "club_name_Test_Club")
         club_point = self.browser.find_element(By.ID, "club_points_Test_Club")
 
-        assert clubs_title.text == "Clubs:", "Error in element retrieval"
+        assert clubs_list_title.text == "Clubs List:", "Error in element retrieval"
+        assert go_back_button is not None, "Error in element retrieval"
         assert club_name.text.startswith("Club: "), "Error in element retrieval"
         assert club_point.text.startswith("Points: "), "Error in element retrieval"
 

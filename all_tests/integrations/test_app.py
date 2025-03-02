@@ -173,21 +173,18 @@ def test_should_display_showSummary_with_no_place_in_competition(client, mocker)
     assert b"Sorry, there are no more places available in this competition" in response.data
 
 
-def test_should_display_showSummary_with_list_of_clubs_and_their_points(client, mocker):
+def test_should_display_list_of_clubs_and_their_points(client, mocker):
     """test that the showSummary page is displayed with valid competition"""
     mocker.patch("server.clubs", copy.deepcopy(MockData.mock_clubs))
-    mocker.patch("server.competitions", [copy.deepcopy(MockData.mock_competitions[3])])
-    mocker.patch("server.manage_competition_places_in_db")
-    mocker.patch("server.manage_club_points_in_db")
-
-    response = client.post('/showSummary', data={'email': 'club1@example.com'})
+    response = client.get('/displayClubsList')
 
     # Check find an over competition
     print(response.data.decode())
     assert response.status_code == 200
-    assert b"Clubs:" in response.data
+    assert b"Clubs List: " in response.data
     assert b"Club 1" in response.data
     assert b"Club 2" in response.data
     assert b"Points: 17" in response.data
     assert b"Points: 0" in response.data
+    assert b"club1@example.com" not in response.data
     assert b"club2@example.com" not in response.data

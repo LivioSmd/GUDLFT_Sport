@@ -36,16 +36,6 @@
         <hr />
         {% endfor %}
     </ul>
-    <h3 id="clubs_title">Clubs:</h3>
-    <ul>
-        {% for club in clubs%}
-        <li>
-            <span id="club_name_{{ club['name'].replace(' ', '_') }}">Club: {{club['name']}}</span><br />
-            <span id="club_points_{{ club['name'].replace(' ', '_') }}">Points: {{club['points']}}</span><br />
-        </li>
-        <hr />
-        {% endfor %}
-    </ul>
     {%endwith%}
 
 </body>
