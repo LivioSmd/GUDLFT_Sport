@@ -89,7 +89,7 @@ class TestAuthentification:
         Utils.sleep()
 
         # récupération du bouton de réservation
-        book_competition_button = self.browser.find_element(By.ID, "competition-2")
+        book_competition_button = self.browser.find_element(By.ID, "competition_4")
         book_competition_button.click()
 
         Utils.sleep()
@@ -112,7 +112,7 @@ class TestAuthentification:
         email_input.send_keys("admin@test.com")
         login_submit_button.click()
         Utils.sleep()
-        book_competition_button = self.browser.find_element(By.ID, "competition-2")
+        book_competition_button = self.browser.find_element(By.ID, "competition_4")
         book_competition_button.click()
         Utils.sleep()
         places_input = self.browser.find_element(By.NAME, "places")
@@ -132,7 +132,7 @@ class TestAuthentification:
         email_input.send_keys("admin@test.com")
         login_submit_button.click()
         Utils.sleep()
-        book_competition_button = self.browser.find_element(By.ID, "competition-2")
+        book_competition_button = self.browser.find_element(By.ID, "competition_4")
         book_competition_button.click()
         Utils.sleep()
         places_input = self.browser.find_element(By.NAME, "places")
@@ -152,7 +152,7 @@ class TestAuthentification:
         email_input.send_keys("admin@test.com")
         login_submit_button.click()
         Utils.sleep()
-        book_competition_button = self.browser.find_element(By.ID, "competition-2")
+        book_competition_button = self.browser.find_element(By.ID, "competition_4")
         book_competition_button.click()
         Utils.sleep()
         places_input = self.browser.find_element(By.NAME, "places")
@@ -172,7 +172,7 @@ class TestAuthentification:
         email_input.send_keys("admin@test.com")
         login_submit_button.click()
         Utils.sleep()
-        book_competition_button = self.browser.find_element(By.ID, "competition_2")
+        book_competition_button = self.browser.find_element(By.ID, "competition_4")
         book_competition_button.click()
         Utils.sleep()
         places_input = self.browser.find_element(By.NAME, "places")
@@ -193,7 +193,7 @@ class TestAuthentification:
         login_submit_button.click()
         Utils.sleep()
 
-        book_place_element = self.browser.find_element(By.ID, "competition_3")
+        book_place_element = self.browser.find_element(By.ID, "competition_4")
         assert book_place_element.text == "Book Places", "Error in element retrieval"
 
     def test_should_should_display_showSummary_with_not_available_competition(self):
@@ -205,7 +205,7 @@ class TestAuthentification:
         login_submit_button.click()
         Utils.sleep()
 
-        comp_over_element = self.browser.find_element(By.ID, "comp_error_comp_over_0")
-        comp_no_place_element = self.browser.find_element(By.ID, "comp_no_place_2")
+        comp_over_element = self.browser.find_element(By.ID, "comp_error_comp_over_2")
+        comp_no_place_element = self.browser.find_element(By.ID, "comp_no_place_3")
         assert comp_over_element.text == "This competition is now over", "Error in element retrieval"
         assert comp_no_place_element.text == "Sorry, there are no more places available in this competition", "Error in element retrieval"

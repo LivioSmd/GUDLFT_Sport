@@ -13,7 +13,7 @@ class MockData:
 
     # Données mockées pour remplacer le contenu de `clubs`
     mock_clubs = [
-        {"name": "Club 1", "email": "club1@example.com", "points": "30"},
+        {"name": "Club 1", "email": "club1@example.com", "points": "17"},
         {"name": "Club 2", "email": "club2@example.com", "points": "0"}
     ]
 
@@ -22,7 +22,7 @@ class MockData:
         {
             "name": "Competition 1",
             "date": "2030-01-01 13:00:00",
-            "numberOfPlaces": "25"
+            "numberOfPlaces": "14"
         },
         {
             "name": "Competition 2",
@@ -45,5 +45,5 @@ class MockData:
     purchase_place_data = {
         'competition': mock_competitions[0]["name"],
         'club': mock_clubs[0]["name"],
-        'places': "30"
+        'places': "1"
     }

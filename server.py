@@ -82,13 +82,25 @@ def purchasePlaces():
         flash("Sorry, the maximum number of places per club per competition is : 12.")
         return redirect(url_for("book", competition=competition["name"], club=club["name"]))
 
+    competition_places = int(competition["numberOfPlaces"])
+    club_points = int(club["points"])
     try:
-        competition["numberOfPlaces"] = int(competition["numberOfPlaces"]) - places_required
-        club["points"] = int(club["points"]) - places_required
+        competition["numberOfPlaces"] = competition_places - places_required
+        club["points"] = club_points - places_required
+
+        print("club:", club),
+        print("competition:", competition),
+
+        manage_club_points_in_db(club)
+        manage_competition_places_in_db(competition)
 
         flash('Great-booking complete!')
         return render_template('welcome.html', club=club, competitions=competitions)
     except ValueError:
+        # Reset competition places and club points in case of manage club or competition in db fail
+        competition["numberOfPlaces"] = competition_places
+        club["points"] = club_points
+
         flash('Sorry, there was an error with your booking. Please try again.')
         return render_template('booking.html', club=club, competition=competition)
 
@@ -125,6 +137,28 @@ def manage_over_competitions(competitions_list):
             over_competitions.append(competition)
 
     return over_competitions
+
+
+def manage_club_points_in_db(club):
+    index_club = clubs.index(club)
+    dict_clubs = {}
+
+    with open('clubs.json', "w") as file_club:
+        clubs[index_club]["points"] = str(club["points"])
+        dict_clubs["clubs"] = clubs
+
+        json.dump(dict_clubs, file_club, indent=4)
+
+
+def manage_competition_places_in_db(competition):
+    index_competition = competitions.index(competition)
+    dict_competitions = {}
+
+    with open('competitions.json', "w") as file_competition:
+        competitions[index_competition]["numberOfPlaces"] = str(competition["numberOfPlaces"])
+        dict_competitions["competitions"] = competitions
+
+        json.dump(dict_competitions, file_competition, indent=4)
 
 
 # TODO: Add route for points display
