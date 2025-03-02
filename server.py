@@ -15,12 +15,25 @@ def loadCompetitions():
         return listOfCompetitions
 
 
+today = datetime.today().strftime("%Y-%m-%d")  # Today date format : "YYYY-MM-DD"
+
+
+def manage_over_competitions(competitions_list):
+    over_competitions_list = []
+
+    for competition in competitions_list:
+        if competition["date"] < today:
+            over_competitions_list.append(competition)
+
+    return over_competitions_list
+
+
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
 competitions = loadCompetitions()
 clubs = loadClubs()
-today = datetime.today().strftime("%Y-%m-%d")  # Today date format : "YYYY-MM-DD"
+over_competitions = manage_over_competitions(competitions)
 
 
 def get_club_by_email(email):
@@ -44,6 +57,7 @@ def showSummary():
     if club:  # club is found in database
         return render_template('welcome.html',
                                club=club,
+                               clubs=clubs,
                                competitions=competitions,
                                over_competitions=over_competitions)
     else:
@@ -59,12 +73,15 @@ def book(competition, club):
         return render_template('booking.html', club=foundClub, competition=foundCompetition)
     else:
         flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html',
+                               club=club,
+                               clubs=clubs,
+                               over_competitions=over_competitions,
+                               competitions=competitions)
 
 
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
-
     competition = get_competition(request.form["competition"])
     club = get_club(request.form["club"])
     places_required = get_place_required(request.form["places"])
@@ -88,14 +105,15 @@ def purchasePlaces():
         competition["numberOfPlaces"] = competition_places - places_required
         club["points"] = club_points - places_required
 
-        print("club:", club),
-        print("competition:", competition),
-
         manage_club_points_in_db(club)
         manage_competition_places_in_db(competition)
 
         flash('Great-booking complete!')
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html',
+                               club=club,
+                               clubs=clubs,
+                               over_competitions=over_competitions,
+                               competitions=competitions)
     except ValueError:
         # Reset competition places and club points in case of manage club or competition in db fail
         competition["numberOfPlaces"] = competition_places
@@ -127,16 +145,6 @@ def get_place_required(place_number):
         return placesRequired
     except ValueError:
         return int(0)
-
-
-def manage_over_competitions(competitions_list):
-    over_competitions = []
-
-    for competition in competitions_list:
-        if competition["date"] < today:
-            over_competitions.append(competition)
-
-    return over_competitions
 
 
 def manage_club_points_in_db(club):

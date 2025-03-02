@@ -16,7 +16,7 @@
        </ul>
     {% endif%}
     Points available: {{club['points']}}
-    <h3>Competitions:</h3>
+    <h3 id="competitions_title">Competitions:</h3>
     <ul>
         {% for comp in competitions%}
         <li>
@@ -32,6 +32,16 @@
             {%elif comp['numberOfPlaces']|int >= 0%}
             <span id="comp_no_place_{{ loop.index0 }}">Sorry, there are no more places available in this competition</span></br>
             {%endif%}
+        </li>
+        <hr />
+        {% endfor %}
+    </ul>
+    <h3 id="clubs_title">Clubs:</h3>
+    <ul>
+        {% for club in clubs%}
+        <li>
+            <span id="club_name_{{ club['name'].replace(' ', '_') }}">Club: {{club['name']}}</span><br />
+            <span id="club_points_{{ club['name'].replace(' ', '_') }}">Points: {{club['points']}}</span><br />
         </li>
         <hr />
         {% endfor %}

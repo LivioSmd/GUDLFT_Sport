@@ -209,3 +209,22 @@ class TestAuthentification:
         comp_no_place_element = self.browser.find_element(By.ID, "comp_no_place_3")
         assert comp_over_element.text == "This competition is now over", "Error in element retrieval"
         assert comp_no_place_element.text == "Sorry, there are no more places available in this competition", "Error in element retrieval"
+
+    def test_should_should_display_showSummary_with_list_of_clubs_and_their_points(self):
+
+        email_input = self.browser.find_element(By.NAME, "email")
+        login_submit_button = self.browser.find_element(By.TAG_NAME, "button")
+        email_input.send_keys("admin@test.com")
+        login_submit_button.click()
+        Utils.sleep()
+
+        clubs_title = self.browser.find_element(By.ID, "clubs_title")
+        club_name = self.browser.find_element(By.ID, "club_name_Test_Club")
+        club_point = self.browser.find_element(By.ID, "club_points_Test_Club")
+
+        assert clubs_title.text == "Clubs:", "Error in element retrieval"
+        assert club_name.text.startswith("Club: "), "Error in element retrieval"
+        assert club_point.text.startswith("Points: "), "Error in element retrieval"
+
+
+
