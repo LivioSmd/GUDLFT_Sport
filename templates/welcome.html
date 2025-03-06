@@ -5,8 +5,7 @@
     <title>Summary | GUDLFT Registration</title>
 </head>
 <body>
-        <h2>Welcome, {{club['email']}} </h2><a href="{{url_for('logout')}}">Logout</a>
-
+    <h2>Welcome, {{club['email']}} </h2><a href="{{url_for('logout')}}">Logout</a>
     {% with messages = get_flashed_messages()%}
     {% if messages %}
         <ul>
@@ -26,7 +25,8 @@
             <span id="comp_number_place_{{ loop.index0 }}">Number of Places: {{comp['numberOfPlaces']}}</span></br>
             {%endif%}
             {%if comp['numberOfPlaces']|int >0 and comp not in over_competitions%}
-            <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" id="competition_{{ loop.index0 }}">Book Places</a><br />
+            <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}"
+               id="competition_{{ loop.index0 }}">Book Places</a><br />
             {%elif comp in over_competitions%}
             <span id="comp_error_comp_over_{{ loop.index0 }}">This competition is now over</span></br>
             {%elif comp['numberOfPlaces']|int >= 0%}
@@ -37,6 +37,5 @@
         {% endfor %}
     </ul>
     {%endwith%}
-
 </body>
 </html>

@@ -2,23 +2,25 @@ import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 from datetime import datetime
 
+today = datetime.today().strftime("%Y-%m-%d")  # Today date format : "YYYY-MM-DD"
+
 
 def loadClubs():
+    """open json 'clubs' file and return a list of clubs"""
     with open('clubs.json') as c:
         listOfClubs = json.load(c)['clubs']
         return listOfClubs
 
 
 def loadCompetitions():
+    """open json 'competitions' file and return a list of clubs"""
     with open('competitions.json') as comps:
         listOfCompetitions = json.load(comps)['competitions']
         return listOfCompetitions
 
 
-today = datetime.today().strftime("%Y-%m-%d")  # Today date format : "YYYY-MM-DD"
-
-
 def manage_over_competitions(competitions_list):
+    """take a list of compétitions and return a list of competitions that are over"""
     over_competitions_list = []
 
     for competition in competitions_list:
@@ -33,10 +35,11 @@ app.secret_key = 'something_special'
 
 competitions = loadCompetitions()
 clubs = loadClubs()
-over_competitions = manage_over_competitions(competitions)
+over_competitions = manage_over_competitions(competitions) # return a list of competitions that are over
 
 
 def get_club_by_email(email):
+    """take email and return a club from the list of clubs by email"""
     try:
         club = [club for club in clubs if club['email'] == email][0]
         return club
@@ -52,7 +55,6 @@ def index():
 @app.route('/showSummary', methods=['POST'])
 def showSummary():
     club = get_club_by_email(request.form['email'])
-    over_competitions = manage_over_competitions(competitions)  # return a list of competitions that are over
 
     if club:  # club is found in database
         return render_template('welcome.html',
@@ -121,6 +123,7 @@ def purchasePlaces():
 
 
 def get_competition(form_competition_name):
+    """take a competition name and return a competition from the list of competitions"""
     try:
         competition = [competition for competition in competitions if competition["name"] == form_competition_name][0]
         return competition
@@ -129,6 +132,7 @@ def get_competition(form_competition_name):
 
 
 def get_club(form_club_name):
+    """take a club name and return a club from the list of clubs"""
     try:
         club = [club for club in clubs if club["name"] == form_club_name][0]
         return club
@@ -137,6 +141,7 @@ def get_club(form_club_name):
 
 
 def get_place_required(place_number):
+    """take a place number and return int of places required or 0"""
     try:
         placesRequired = int(place_number)
         return placesRequired
@@ -145,6 +150,7 @@ def get_place_required(place_number):
 
 
 def manage_club_points_in_db(club):
+    """take a club and update the club points in the database"""
     index_club = clubs.index(club)
     dict_clubs = {}
 
@@ -156,6 +162,7 @@ def manage_club_points_in_db(club):
 
 
 def manage_competition_places_in_db(competition):
+    """take a competition and update the competition places in the database"""
     index_competition = competitions.index(competition)
     dict_competitions = {}
 

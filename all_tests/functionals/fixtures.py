@@ -2,9 +2,9 @@ import time
 
 
 class Utils:
-    """Classe utilitaire pour les tests."""
+    """Utility class for tests."""
 
     @staticmethod
     def sleep():
-        """Pause de 2 secondes."""
+        """Pause of 2 seconds."""
         time.sleep(2)

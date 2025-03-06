@@ -11,13 +11,13 @@ def client():
 
 class MockData:
 
-    # Données mockées pour remplacer le contenu de "clubs"
+    # Mocked data to replace the content of "clubs"
     mock_clubs = [
         {"name": "Club 1", "email": "club1@example.com", "points": "10"},
         {"name": "Club 2", "email": "club2@example.com", "points": "0"}
     ]
 
-    # Données mockées pour remplacer le contenu de "clubs"
+    # Mocked data to replace the content of "competitions"
     mock_competitions = [
         {
             "name": "Competition 1",
@@ -41,7 +41,7 @@ class MockData:
         }
     ]
 
-    # Données mockées pour avoir des données invalide
+    # Mocked data to have invalid data
     invalid_email = "invalid@example.com"
     invalid_club_name = "invalid_club_name"
     invalid_competition_name = "invalid_competition_name"
