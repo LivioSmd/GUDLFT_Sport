@@ -49,3 +49,10 @@
     We also like to show how well we're testing, so there's a module called 
     [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) you should add to your project.
 
+Testing commands :
+- pytest (run all tests)
+- pytest -k <test_name> (run only one test)
+- pytest --cov=. (Run tests with coverage)
+- pytest --cov=. --cov-report html (generate the folder containing the coverage index file)
+
+- locust -f locustfile.py (run locust)
